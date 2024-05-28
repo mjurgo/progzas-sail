@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Grade;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,21 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    public function dashboard(): View
+    {
+        if (Auth::user()->isAdmin()) {
+            $grades = Grade::all();
+        } else if (Auth::user()->isTeacher()) {
+            $grades = Auth::user()->gradesGiven->sortByDesc('created_at');
+        } else {
+            $grades = Auth::user()->grades;
+        }
+
+        return View('dashboard', [
+            'user' => Auth::user(),
+            'grades' => $grades,
+        ]);
+    }
     /**
      * Display the user's profile form.
      */
