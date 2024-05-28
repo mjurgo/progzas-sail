@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static findOrFail(mixed $get)
+ * @method static create(array $array)
+ */
 class Grade extends Model
 {
     use HasFactory;
