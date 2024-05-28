@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @method static findOrFail(mixed $get)
  * @method static create(array $array)
+ * @method static find(\Illuminate\Routing\Route|object|string|null $route)
  */
 class Grade extends Model
 {
