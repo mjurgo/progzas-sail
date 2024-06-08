@@ -5,9 +5,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ProfileController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/dashboard', [ProfileController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])->name('dashboard');
@@ -18,6 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/grades/{grade}/history', [GradeController::class, 'history'])->name('grades.history');
 Route::resource('grades', GradeController::class);
 
 Route::prefix('students')->name('students.')->group(function () {

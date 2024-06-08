@@ -28,6 +28,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('subjects');
-        Schema::dropColumns('grades', 'teacher_id');
+        Schema::table('grades', function (Blueprint $table) {
+            $table->dropForeign('grades_teacher_id_foreign');
+            $table->dropColumn('teacher_id');
+        });
     }
 };

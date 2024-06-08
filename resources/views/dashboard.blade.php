@@ -17,13 +17,17 @@
                         <tr>
                             <th scope="col" class="px-6 py-4">Przedmiot</th>
                             <th scope="col" class="px-6 py-4">Ocena</th>
-                            @can('teacher-level')
+                            @can('admin-level')
+                                <th scope="col" class="px-6 py-4">Uczeń</th>
+                                <th scope="col" class="px-6 py-4">Nauczyciel</th>
+                            @elsecan('teacher-level')
                                 <th scope="col" class="px-6 py-4">Uczeń</th>
                             @else
                                 <th scope="col" class="px-6 py-4">Nauczyciel</th>
                             @endcan
                             <th scope="col" class="px-6 py-4">Komentarz nauczyciela</th>
                             <th scope="col" class="px-6 py-4">Wystawiona</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -31,13 +35,23 @@
                             <tr class="border-b dark:border-neutral-500">
                                 <td class="whitespace-nowrap px-6 py-4">{{ $grade->subject->name }}</td>
                                 <td class="whitespace-nowrap px-6 py-4">{{ $grade->value }}</td>
-                                @can('teacher-level')
+                                @can('admin-level')
+                                    <td class="whitespace-nowrap px-6 py-4">{{ $grade->student->name }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4">{{ $grade->student->name }}</td>
+                                @elsecan('teacher-level')
                                     <td class="whitespace-nowrap px-6 py-4">{{ $grade->student->name }}</td>
                                 @else
                                     <td class="whitespace-nowrap px-6 py-4">{{ $grade->student->name }}</td>
                                 @endcan
                                 <td class="whitespace-nowrap px-6 py-4">{{ $grade->comment }}</td>
                                 <td class="whitespace-nowrap px-6 py-4">{{ $grade->created_at }}</td>
+                                @cannot('teacher-level')
+                                    <td class="whitespace-nowrap px-6 py-4">
+                                        <button class="inline-flex items-center px-4 py-2 bg-indigo-50 border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
+                                            <a href="{{ route('grades.history', ['grade' => $grade]) }}">Historia zmian</a>
+                                        </button>
+                                    </td>
+                                @endcannot
                             </tr>
                         @endforeach
                         </tbody>

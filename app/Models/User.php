@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @method static find(int $user_id)
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -49,12 +52,12 @@ class User extends Authenticatable
 
     public function grades(): HasMany
     {
-        return $this->hasMany(Grade::class);
+        return $this->hasMany(Grade::class)->where('active', '=', true);
     }
 
     public function gradesGiven(): HasMany
     {
-        return $this->hasMany(Grade::class, 'teacher_id');
+        return $this->hasMany(Grade::class, 'teacher_id')->where('active', '=', true);
     }
 
     public function role(): BelongsTo

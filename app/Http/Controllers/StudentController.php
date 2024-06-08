@@ -9,6 +9,7 @@ use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class StudentController extends Controller
@@ -42,6 +43,7 @@ class StudentController extends Controller
             'subject_id' => $validated['subject_id'],
             'user_id' => $id,
             'teacher_id' => Auth::id(),
+            'identifier' => Str::uuid(),
         ]);
 
         return View('students.show', [
@@ -55,10 +57,13 @@ class StudentController extends Controller
         Gate::authorize('teacher-level');
 
         $grade = Grade::findOrFail($request->get('gradeId'));
+        $grades = Grade::where('identifier', $grade->identifier)->get();
 
         Gate::allowIf($grade->teacher_id === Auth::id() || Auth::user()->isAdmin());
 
-        $grade->delete();
+        foreach ($grades as $grade) {
+            $grade->delete();
+        }
 
         return View('students.show', [
             'student' => $this->repository->getStudentById($id),
