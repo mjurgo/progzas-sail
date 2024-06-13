@@ -1,22 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Pulpit') }}
-        </h2>
+        <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-2xl text-white leading-tight bg-gradient-to-r from-blue-500 to-purple-500 p-4 rounded shadow-md">
+                Historia zmiany oceny: {{ $studentName }}
+            </h2>
+        </div>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="bg-white overflow-hidden shadow-lg rounded-lg transition transform hover:-translate-y-1 hover:shadow-xl">
                 <div class="p-6 text-gray-900">
-                    <h2 class="text-lg font-medium text-gray-900">
-                        {{ __('Historia zmian oceny') }}
-                    </h2>
-                    <h2 class="text-lg font-medium text-gray-900">
-                        {{ $studentName }}
-                    </h2>
                     <table class="min-w-full text-left text-sm font-light">
-                        <thead class="border-b font-medium dark:border-neutral-500">
+                        <thead class="border-b font-medium bg-gray-100">
                         <tr>
                             <th scope="col" class="px-6 py-4">Ocena</th>
                             <th scope="col" class="px-6 py-4">Komentarz nauczyciela</th>
@@ -25,7 +21,7 @@
                         </thead>
                         <tbody>
                         @foreach($grades as $grade)
-                            <tr class="border-b dark:border-neutral-500">
+                            <tr class="border-b bg-gray-50 hover:bg-gray-100 transition transform hover:-translate-y-1 hover:shadow-md">
                                 <td class="whitespace-nowrap px-6 py-4">{{ $grade->value }}</td>
                                 <td class="whitespace-nowrap px-6 py-4">{{ $grade->comment }}</td>
                                 <td class="whitespace-nowrap px-6 py-4">{{ $grade->created_at }}</td>
@@ -33,7 +29,6 @@
                         @endforeach
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
