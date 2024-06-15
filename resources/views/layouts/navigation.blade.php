@@ -13,6 +13,11 @@
                             {{ __('Uczniowie') }}
                         </x-nav-link>
                     @endcan
+                    @can('admin-level')
+                        <x-nav-link :href="route('users.create')" :active="request()->routeIs('users.create')" class="text-white hover:text-gray-200">
+                            {{ __('Utwórz użytkownika') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 

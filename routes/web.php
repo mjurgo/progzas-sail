@@ -11,6 +11,11 @@ Route::get('/', [ProfileController::class, 'dashboard'])
 Route::get('/dashboard', [ProfileController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/users/create', [ProfileController::class, 'create'])
+    ->middleware(['auth', 'verified'])->name('users.create');
+Route::post('/users/create', [ProfileController::class, 'store'])
+    ->middleware(['auth', 'verified'])->name('users.store');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

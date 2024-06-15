@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Grade;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -27,6 +32,38 @@ class ProfileController extends Controller
             'grades' => $grades,
         ]);
     }
+
+    public function create(): Application|ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|View
+    {
+        if (!Auth::user()->isAdmin()) {
+            return response('Brak uprawnień', 403);
+        }
+
+        return View('profile.create', [
+            'roles' => Role::all(),
+        ]);
+    }
+
+    public function store(Request $request): Application|ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|Redirect|RedirectResponse
+    {
+        if (!Auth::user()->isAdmin()) {
+            return response('Brak uprawnień', 403);
+        }
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role_id' => $request->role_id,
+        ]);
+
+        return Redirect::route('students.index');
+    }
+
     /**
      * Display the user's profile form.
      */
